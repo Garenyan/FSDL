@@ -4,8 +4,8 @@ import Bean.Helper.FeatureHelper;
 import Bean.Helper.ResultHelper;
 import Bean.MethodPairSimVector;
 import DataTrain.ConvertToFiles;
+import DataTrain.ParameterStaticValue;
 import Features.FLDLFeatureRun;
-import Features.MethodPairSimVectorHelper;
 import MyTools.FileUtils;
 import MyTools.MyThread;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
@@ -17,7 +17,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by garen on 2019/3/25.
