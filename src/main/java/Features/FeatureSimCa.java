@@ -4,6 +4,7 @@ import Bean.*;
 import Bean.Helper.VectorHelperObject;
 import Bean.Lexical.*;
 import Bean.Struct.*;
+import DataTrain.ParameterStaticValue;
 import MyTools.FileUtils;
 import StaticValue.StructureStaticValue;
 
@@ -384,10 +385,9 @@ public class FeatureSimCa {
      * @param t
      * @return
      */
-    public Double getFunSim(List<ParaObject> s, List<ParaObject> t)
+    public Double getFunSim(List<ParaObject> s, List<ParaObject> t,Double x)
     {
         Double sim =0.0;
-        Double x = 0.3;
         sim = x*getfirstSim(s,t)+(1-x)*getSecondSim(s,t);
         return sim;
     }

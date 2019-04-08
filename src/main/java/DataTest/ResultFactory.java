@@ -3,14 +3,22 @@ package DataTest;
 import Bean.Helper.FeatureHelper;
 import Bean.Helper.ResultHelper;
 import Bean.MethodPairSimVector;
+import DataTrain.ParameterStaticValue;
+import MyTools.FileUtils;
+import MyTools.TimeUtils;
+import StaticValue.MeasureFileStaticValue;
 import StaticValue.MyXMLStaticValue;
+import StaticValue.StructureStaticValue;
+import fj.P;
 import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
 import java.io.File;
+import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Created by garen on 2019/3/23.
@@ -34,6 +42,7 @@ public class ResultFactory {
 
     private static double precisipn = 0.0;
     private static double recall = 0.0;
+    private static double f=0.0;
 
     private static void getPrecision() {
         precisipn = test_true_num / (test_num * 1.0);
@@ -46,7 +55,7 @@ public class ResultFactory {
     }
 
     private static void getFValue() {
-        double f = 2 * (precisipn * recall) / (precisipn + recall);
+        f = 2 * (precisipn * recall) / (precisipn + recall);
         System.out.println("总F-measure值为：" + f);
     }
 
@@ -67,18 +76,16 @@ public class ResultFactory {
                 Element element = methodPairElements.get(i).element(MyXMLStaticValue.SIMVECTOR);
                 String text = element.getText();
                 String[] simStrs = text.split(MyXMLStaticValue.XMLSPILT);
-                Double[] simDoubles = getSimDoubles(featureHelper, transformToDoubles(simStrs));
-                Double funSim=0.0;
-                if (featureHelper == FeatureHelper.FUNCTION){
-                    funSim = Double.valueOf(simStrs[11]);
-                }
-                if (checkType_1(simDoubles)) {
+                featureHelper = FeatureHelper.NULLFEATURE;
+                Double[] doubles = transformToDoubles(simStrs);
+                Double funSim=doubles[11];
+                if (checkType_1(doubles)) {
                     type1_num++;
-                } else if (checkType_2(simDoubles)) {
+                } else if (checkType_2(doubles)) {
                     type2_num++;
-                } else if (checkTypeST3(simDoubles)) {
+                } else if (checkTypeST3(doubles)) {
                     typeST3_num++;
-                } else if (checkTypeMT3(simDoubles,featureHelper,funSim)) {
+                } else if (checkTypeMT3(doubles,featureHelper,funSim)) {
                     typeMT3_num++;
                 } else {
                     type4_num++;
@@ -139,7 +146,7 @@ public class ResultFactory {
                 System.out.println("type4总个数："+type4_num);
             }
         }
-
+        createMeasureResultFiles();
     }
 
     private static Boolean checkType_1(Double[] sims) {
@@ -263,16 +270,16 @@ public class ResultFactory {
         int num = 0;
         Double sum = 0.0;
         Double[] doubles = getSimDoubles(featureHelper,sims);
-       if (sims[11] < 0.5 || sims[10] < 0.7) {
-            return false;
-        } else {
+//       if (sims[11] < 0.5 || sims[10] < 0.7) {
+//            return false;
+//        } else {
             for (int i = 0; i < doubles.length; i++) {
-                if (sims[i] != 0.5) {
+                if (doubles[i] != 0.5) {
                     num++;
                     sum = sum + doubles[i];
                 }
             }
-            if (sum > 0.7 * num) {
+            if (sum >= 0.7 * num) {
                 return true;
             } else {
                 //允许部分少量MT-3
@@ -302,7 +309,7 @@ public class ResultFactory {
                     return false;
                 }
             }
-        }
+    //    }
     }
 
 
@@ -375,5 +382,124 @@ public class ResultFactory {
             doubles[i] = Double.valueOf(strings[i]);
         }
         return doubles;
+    }
+
+    private static void createMeasureResultFiles(){
+        ParameterStaticValue parameterStaticValue = new ParameterStaticValue();
+        StringBuilder stringBuilder = new StringBuilder("");
+        stringBuilder.append("测试时间为：");
+        stringBuilder.append(TimeUtils.getTimeAndDateStringFormat(new Date(),"yyy-MM-dd HH-mm-ss"));
+        stringBuilder.append(MeasureFileStaticValue.SPACE);
+        Properties properties = System.getProperties();
+        stringBuilder.append("JAVA的运行版本：");
+        stringBuilder.append(properties.getProperty("java.version"));
+        stringBuilder.append(MeasureFileStaticValue.SPACE);
+        stringBuilder.append("运行的操作系统名称：");
+        stringBuilder.append(properties.getProperty("os.name"));
+        stringBuilder.append(MeasureFileStaticValue.NEWLINE);
+
+        stringBuilder.append("该测试设置的所有参数：");
+        stringBuilder.append(MeasureFileStaticValue.NEWLINE);
+        stringBuilder.append("一级相似度阈值:");
+        stringBuilder.append(parameterStaticValue.x);
+        stringBuilder.append(MeasureFileStaticValue.SPACE);
+        stringBuilder.append("DT阈值：");
+        stringBuilder.append(StructureStaticValue.DT);
+        stringBuilder.append(MeasureFileStaticValue.SPACE);
+        stringBuilder.append("克隆阈值：");
+        stringBuilder.append(parameterStaticValue.Clone_Threshold);
+        stringBuilder.append(MeasureFileStaticValue.NEWLINE);
+
+        stringBuilder.append("随机数种子(seed)：");
+        stringBuilder.append(parameterStaticValue.seed);
+        stringBuilder.append(MeasureFileStaticValue.SPACE);
+        stringBuilder.append("迭代次数(nEpoch)：");
+        stringBuilder.append(parameterStaticValue.nEpochs);
+        stringBuilder.append(MeasureFileStaticValue.SPACE);
+        stringBuilder.append("学习率：");
+        stringBuilder.append(parameterStaticValue.learningRate);
+        stringBuilder.append(MeasureFileStaticValue.SPACE);
+        stringBuilder.append("批处理尺寸：");
+        stringBuilder.append(parameterStaticValue.batchsize);
+        stringBuilder.append(MeasureFileStaticValue.NEWLINE);
+        stringBuilder.append("输入层结点个数：");
+        stringBuilder.append(parameterStaticValue.numInputs);
+        stringBuilder.append(MeasureFileStaticValue.SPACE);
+        stringBuilder.append("隐藏层结点个数：");
+        stringBuilder.append(parameterStaticValue.numHiddenNodes);
+        stringBuilder.append(MeasureFileStaticValue.SPACE);
+        stringBuilder.append("输出层结点个数：");
+        stringBuilder.append(parameterStaticValue.numOutputs);
+        stringBuilder.append(MeasureFileStaticValue.NEWLINE);
+
+        stringBuilder.append("实验结果：");
+        stringBuilder.append(MeasureFileStaticValue.NEWLINE);
+        stringBuilder.append("总精确度：");
+        stringBuilder.append(precisipn);
+        stringBuilder.append(MeasureFileStaticValue.SPACE);
+        stringBuilder.append("总召回率：");
+        stringBuilder.append(recall);
+        stringBuilder.append(MeasureFileStaticValue.SPACE);
+        stringBuilder.append("总F-measure值：");
+        stringBuilder.append(f);
+        stringBuilder.append(MeasureFileStaticValue.NEWLINE);
+
+
+        stringBuilder.append("预测出的代码克隆总数：");
+        stringBuilder.append(test_num);
+        stringBuilder.append(MeasureFileStaticValue.SPACE);
+        stringBuilder.append("基准中代码克隆总数：");
+        stringBuilder.append(test_true_num);
+        stringBuilder.append(MeasureFileStaticValue.NEWLINE);
+        stringBuilder.append("预测出的T1代码克隆总数：");
+        stringBuilder.append(test_type1_num);
+        stringBuilder.append(MeasureFileStaticValue.SPACE);
+        stringBuilder.append("基准中T1个数：");
+        stringBuilder.append(type1_num);
+        stringBuilder.append(MeasureFileStaticValue.SPACE);
+        stringBuilder.append("T1召回率：");
+        stringBuilder.append(test_type1_num/(type1_num*1.0));
+        stringBuilder.append(MeasureFileStaticValue.NEWLINE);
+
+        stringBuilder.append("预测出的T2代码克隆总数：");
+        stringBuilder.append(test_type2_num);
+        stringBuilder.append(MeasureFileStaticValue.SPACE);
+        stringBuilder.append("基准中T2个数：");
+        stringBuilder.append(type2_num);
+        stringBuilder.append(MeasureFileStaticValue.SPACE);
+        stringBuilder.append("T2召回率：");
+        stringBuilder.append(test_type2_num/(type2_num*1.0));
+        stringBuilder.append(MeasureFileStaticValue.NEWLINE);
+        stringBuilder.append("预测出的ST3代码克隆总数：");
+        stringBuilder.append(test_typeST3_num);
+        stringBuilder.append(MeasureFileStaticValue.SPACE);
+        stringBuilder.append("基准中ST3个数：");
+        stringBuilder.append(typeST3_num);
+        stringBuilder.append(MeasureFileStaticValue.SPACE);
+        stringBuilder.append("ST3召回率：");
+        stringBuilder.append(test_typeST3_num/(typeST3_num*1.0));
+        stringBuilder.append(MeasureFileStaticValue.NEWLINE);
+        stringBuilder.append("预测出的MT3代码克隆总数：");
+        stringBuilder.append(test_typeMT3_num);
+        stringBuilder.append(MeasureFileStaticValue.SPACE);
+        stringBuilder.append("基准中MT3个数：");
+        stringBuilder.append(typeMT3_num);
+        stringBuilder.append(MeasureFileStaticValue.SPACE);
+        stringBuilder.append("MT3召回率：");
+        stringBuilder.append(test_typeMT3_num/(typeMT3_num*1.0));
+        stringBuilder.append(MeasureFileStaticValue.NEWLINE);
+        stringBuilder.append("预测出的T4代码克隆总数：");
+        stringBuilder.append(test_type4_num);
+        stringBuilder.append(MeasureFileStaticValue.SPACE);
+        stringBuilder.append("基准中T4个数：");
+        stringBuilder.append(type4_num);
+        stringBuilder.append(MeasureFileStaticValue.SPACE);
+        stringBuilder.append("T4召回率：");
+        stringBuilder.append(test_type4_num/(type4_num*1.0));
+        stringBuilder.append(MeasureFileStaticValue.NEWLINE);
+        stringBuilder.append(MeasureFileStaticValue.SPACE);
+        FileUtils.writefiles(stringBuilder.toString(),MeasureFileStaticValue.FILEPATH);
+
+
     }
 }

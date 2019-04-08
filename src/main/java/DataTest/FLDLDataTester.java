@@ -25,10 +25,10 @@ public class FLDLDataTester {
     public static void main(String[] args) throws IOException {
         String test_dirpath = "H:\\PostPaperMaterial\\IJaDataset_BCEvalVersion\\bcb_reduced\\2\\default";
         String benchmark_xml_path = "H:\\workarea\\LSFrame\\benchmarkXMLFiles\\0.3folder2TestBenchmark_Clone.xml";
-        String model_FileName ="model105";
+        String model_FileName ="11model104";
         String model_File = "H:\\workarea\\LSFrame\\TrainDataFiles\\TrainDataSetOutput\\"+model_FileName+".mdl"; //训练模型可不断调节
          FLDLDataTester fldlDataTester = new FLDLDataTester();
-         fldlDataTester.run(test_dirpath,benchmark_xml_path,model_File,FeatureHelper.NULLFEATURE);
+         fldlDataTester.run(test_dirpath,benchmark_xml_path,model_File,FeatureHelper.FUNCTION);
     }
 
     public void run(String test_path,String benchmark_xml_path,String modelFile,FeatureHelper featureHelper) throws IOException {
@@ -94,6 +94,7 @@ public class FLDLDataTester {
 
 
     private static List<MethodPairSimVector> getTrueMethodPairSimVectors(FeatureHelper nonFeature, List<MethodPairSimVector> methodPairSimVectors, MultiLayerNetwork model) {
+        ParameterStaticValue parameterStaticValue = new ParameterStaticValue();
         List<MethodPairSimVector> list = new ArrayList<MethodPairSimVector>();
         switch (nonFeature) {
             case VARIABLENAME:
@@ -104,7 +105,7 @@ public class FLDLDataTester {
                             methodPairSimVector.getsSim6(), methodPairSimVector.getFunSim()};
                     INDArray sim_Matrix = Nd4j.create(matrix);
                     INDArray predicted = model.output(sim_Matrix);
-                    if (checkCloneThreshold(predicted)) {
+                    if (checkCloneThreshold(predicted,parameterStaticValue.Clone_Threshold)) {
                         list.add(methodPairSimVector);
                     }
                 }
@@ -117,7 +118,7 @@ public class FLDLDataTester {
                             methodPairSimVector.getsSim6(), methodPairSimVector.getFunSim()};
                     INDArray sim_Matrix = Nd4j.create(matrix);
                     INDArray predicted = model.output(sim_Matrix);
-                    if (checkCloneThreshold(predicted)) {
+                    if (checkCloneThreshold(predicted,parameterStaticValue.Clone_Threshold)) {
                         list.add(methodPairSimVector);
                     }
                 }
@@ -130,7 +131,7 @@ public class FLDLDataTester {
                             methodPairSimVector.getsSim6(), methodPairSimVector.getFunSim()};
                     INDArray sim_Matrix = Nd4j.create(matrix);
                     INDArray predicted = model.output(sim_Matrix);
-                    if (checkCloneThreshold(predicted)) {
+                    if (checkCloneThreshold(predicted,parameterStaticValue.Clone_Threshold)) {
                         list.add(methodPairSimVector);
                     }
                 }
@@ -143,7 +144,7 @@ public class FLDLDataTester {
                             methodPairSimVector.getsSim6(), methodPairSimVector.getFunSim()};
                     INDArray sim_Matrix = Nd4j.create(matrix);
                     INDArray predicted = model.output(sim_Matrix);
-                    if (checkCloneThreshold(predicted)) {
+                    if (checkCloneThreshold(predicted,parameterStaticValue.Clone_Threshold)) {
                         list.add(methodPairSimVector);
                     }
                 }
@@ -156,7 +157,7 @@ public class FLDLDataTester {
                             methodPairSimVector.getsSim6(), methodPairSimVector.getFunSim()};
                     INDArray sim_Matrix = Nd4j.create(matrix);
                     INDArray predicted = model.output(sim_Matrix);
-                    if (checkCloneThreshold(predicted)) {
+                    if (checkCloneThreshold(predicted,parameterStaticValue.Clone_Threshold)) {
                         list.add(methodPairSimVector);
                     }
                 }
@@ -169,7 +170,7 @@ public class FLDLDataTester {
                             methodPairSimVector.getsSim6(), methodPairSimVector.getFunSim()};
                     INDArray sim_Matrix = Nd4j.create(matrix);
                     INDArray predicted = model.output(sim_Matrix);
-                    if (checkCloneThreshold(predicted)) {
+                    if (checkCloneThreshold(predicted,parameterStaticValue.Clone_Threshold)) {
                         list.add(methodPairSimVector);
                     }
                 }
@@ -182,7 +183,7 @@ public class FLDLDataTester {
                             methodPairSimVector.getsSim6(), methodPairSimVector.getFunSim()};
                     INDArray sim_Matrix = Nd4j.create(matrix);
                     INDArray predicted = model.output(sim_Matrix);
-                    if (checkCloneThreshold(predicted)) {
+                    if (checkCloneThreshold(predicted,parameterStaticValue.Clone_Threshold)) {
                         list.add(methodPairSimVector);
                     }
                 }
@@ -195,7 +196,7 @@ public class FLDLDataTester {
                             methodPairSimVector.getsSim6(), methodPairSimVector.getFunSim()};
                     INDArray sim_Matrix = Nd4j.create(matrix);
                     INDArray predicted = model.output(sim_Matrix);
-                    if (checkCloneThreshold(predicted)) {
+                    if (checkCloneThreshold(predicted,parameterStaticValue.Clone_Threshold)) {
                         list.add(methodPairSimVector);
                     }
                 }
@@ -208,7 +209,7 @@ public class FLDLDataTester {
                             methodPairSimVector.getsSim6(), methodPairSimVector.getFunSim()};
                     INDArray sim_Matrix = Nd4j.create(matrix);
                     INDArray predicted = model.output(sim_Matrix);
-                    if (checkCloneThreshold(predicted)) {
+                    if (checkCloneThreshold(predicted,parameterStaticValue.Clone_Threshold)) {
                         list.add(methodPairSimVector);
                     }
                 }
@@ -221,7 +222,7 @@ public class FLDLDataTester {
                             methodPairSimVector.getsSim6(), methodPairSimVector.getFunSim()};
                     INDArray sim_Matrix = Nd4j.create(matrix);
                     INDArray predicted = model.output(sim_Matrix);
-                    if (checkCloneThreshold(predicted)) {
+                    if (checkCloneThreshold(predicted,parameterStaticValue.Clone_Threshold)) {
                         list.add(methodPairSimVector);
                     }
                 }
@@ -234,7 +235,7 @@ public class FLDLDataTester {
                             methodPairSimVector.getFunSim()};
                     INDArray sim_Matrix = Nd4j.create(matrix);
                     INDArray predicted = model.output(sim_Matrix);
-                    if (checkCloneThreshold(predicted)) {
+                    if (checkCloneThreshold(predicted,parameterStaticValue.Clone_Threshold)) {
                         list.add(methodPairSimVector);
                     }
                 }
@@ -247,7 +248,7 @@ public class FLDLDataTester {
                             methodPairSimVector.getsSim6()};
                     INDArray sim_Matrix = Nd4j.create(matrix);
                     INDArray predicted = model.output(sim_Matrix);
-                    if (checkCloneThreshold(predicted)) {
+                    if (checkCloneThreshold(predicted,parameterStaticValue.Clone_Threshold)) {
                         list.add(methodPairSimVector);
                     }
                 }
@@ -260,7 +261,7 @@ public class FLDLDataTester {
                             methodPairSimVector.getsSim6(), methodPairSimVector.getFunSim()};
                     INDArray sim_Matrix = Nd4j.create(matrix);
                     INDArray predicted = model.output(sim_Matrix);
-                    if (checkCloneThreshold(predicted)) {
+                    if (checkCloneThreshold(predicted,parameterStaticValue.Clone_Threshold)) {
                         list.add(methodPairSimVector);
                     }
                 }
@@ -269,8 +270,8 @@ public class FLDLDataTester {
         return list;
     }
 
-    private static Boolean checkCloneThreshold(INDArray indArray) {
-        if (indArray.getDouble(1) >= ParameterStaticValue.Clone_Threshold) {
+    private static Boolean checkCloneThreshold(INDArray indArray,Double CloneThreshold) {
+        if (indArray.getDouble(1) >= CloneThreshold) {
             return true;
         } else
             return false;

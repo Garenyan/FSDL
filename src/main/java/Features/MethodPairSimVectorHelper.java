@@ -2,6 +2,7 @@ package Features;
 
 import Bean.Method;
 import Bean.MethodPairSimVector;
+import MyTools.TimeUtils;
 import MyTools.XMLUtils;
 import StaticValue.MyXMLStaticValue;
 import org.dom4j.Document;
@@ -46,9 +47,7 @@ public class MethodPairSimVectorHelper {
     }
 
     public static void convertToXMLFile(List<MethodPairSimVector> methodPairSimVectors){
-        Date date = new Date();
-        DateFormat df3 = new SimpleDateFormat("yyy-MM-dd HH-mm-ss");
-        String XMLPath = MyXMLStaticValue.XMLPATH + df3.format(date)+".xml";
+        String XMLPath = MyXMLStaticValue.XMLPATH + TimeUtils.getTimeAndDateStringFormat(new Date(),"yyy-MM-dd HH-mm-ss")+".xml";
         Document document = DocumentHelper.createDocument();
         Element root = document.addElement(MyXMLStaticValue.ROOTELEMENTNAME);
         //document.addComment("这里是注释");//添加XML文件注释

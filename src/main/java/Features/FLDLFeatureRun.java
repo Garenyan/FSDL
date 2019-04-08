@@ -9,6 +9,7 @@ import CodePreProcess.MethodExtract;
 import CodePreProcess.MethodNodeVisitor;
 import CodePreProcess.NodeVisitor;
 import DataTrain.ConvertToFiles;
+import DataTrain.ParameterStaticValue;
 import Features.*;
 import MyTools.ASTTool;
 import MyTools.FileUtils;
@@ -77,6 +78,7 @@ public class FLDLFeatureRun {
 
 
     private static List<MethodPairSimVector> getVectorFromFilesPrivtae(List<String> paths) {
+        ParameterStaticValue parameterStaticValue = new ParameterStaticValue();
 //        if (paths.size()<3800) {
         List<Method> methods = new ArrayList<Method>();
         MethodExtract methodExtract = new MethodExtract();
@@ -116,7 +118,7 @@ public class FLDLFeatureRun {
                 Double sSim5 = featureSimCa.getStructSim5(s.getIfObjects(), t.getIfObjects());
                 Double sSim6 = featureSimCa.getWholeStructSim(s.getWholeStructObject(), t.getWholeStructObject());
 
-                Double fSim = featureSimCa.getFunSim(s.getParaObjects(), t.getParaObjects());
+                Double fSim = featureSimCa.getFunSim(s.getParaObjects(), t.getParaObjects(),parameterStaticValue.x);
 
                 MethodPairSimVector methodPairSimVector = MethodPairSimVectorHelper.createMethodPairSimVectorObject(s, t, leSim1, leSim2, leSim3, leSim4, leSim5, sSim1, sSim2, sSim3, sSim4, sSim5, sSim6, fSim);
                 methodPairSimVectors.add(methodPairSimVector);

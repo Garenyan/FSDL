@@ -33,7 +33,7 @@ import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 public class FLDLTrainer {
-    //public static String config_file = ".\\ConfigFiles\\deepLearing.properties";
+    //public static String config_file = ".\\ConfigFiles\\parameters.properties";
 //    public static String training_file;
 //
 //    public static String output_dir;
@@ -73,9 +73,10 @@ public class FLDLTrainer {
 //    }
 
     public static void main(String... args) throws java.io.IOException, InterruptedException {
+        ParameterStaticValue parameterStaticValue = new ParameterStaticValue();
        // Load_Config();
 //        String training_file = "TrainDataFiles\\newTrainData.csv";
-        String modelName = "model105.mdl";
+        String modelName = parameterStaticValue.model_name+".mdl";
 //        Double learningRate = 0.001;
 //        int batchSize = 45326;
 //        int nEpochs = 400;
@@ -83,10 +84,10 @@ public class FLDLTrainer {
 //        int numOutputs = 2; //输出层个数 固定 二分类 克隆与非克隆
 //        int numHiddenNodes= 16;
         RecordReader rr = new CSVRecordReader();
-        rr.initialize(new FileSplit(new File(ParameterStaticValue.train_data_path)));
-        DataSetIterator trainIter = new RecordReaderDataSetIterator(rr, ParameterStaticValue.batchsize, 0, 2);
+        rr.initialize(new FileSplit(new File(parameterStaticValue.training_file)));
+        DataSetIterator trainIter = new RecordReaderDataSetIterator(rr, parameterStaticValue.batchsize, 0, 2);
         long start = System.nanoTime();
-        int seed = 123;
+        int seed = parameterStaticValue.seed;
 
         String output_dir = "TrainDataFiles\\TrainDataSetOutput\\";
         System.out.println("开始模型训练.......");
@@ -97,16 +98,15 @@ public class FLDLTrainer {
                 .seed(seed)
                 .iterations(1)
                 .optimizationAlgo(OptimizationAlgorithm.STOCHASTIC_GRADIENT_DESCENT)
-//                .learningRate(learningRate)
                 .updater(Updater.NESTEROVS).momentum(0.9)
                 .l2(1e-4)
                 .list()
                 //隐藏层
-                .layer(0,new DenseLayer.Builder().nIn(ParameterStaticValue.numInputs).nOut(ParameterStaticValue.numHiddenNodes) // Number of input datapoints.
+                .layer(0,new DenseLayer.Builder().nIn(parameterStaticValue.numInputs).nOut(parameterStaticValue.numHiddenNodes) // Number of input datapoints.
                         .activation("relu") // Activation function.
                         .weightInit(WeightInit.XAVIER) // Weight initialization.
                         .build())
-                .layer(1,new DenseLayer.Builder().nIn(ParameterStaticValue.numHiddenNodes).nOut(ParameterStaticValue.numHiddenNodes)
+                .layer(1,new DenseLayer.Builder().nIn(parameterStaticValue.numHiddenNodes).nOut(parameterStaticValue.numHiddenNodes)
                 .weightInit(WeightInit.XAVIER)
                 .activation("relu")
                 .build())
@@ -132,8 +132,8 @@ public class FLDLTrainer {
 //                        .build())
                 //输出层
                 .layer(2,new OutputLayer.Builder(LossFunctions.LossFunction.NEGATIVELOGLIKELIHOOD)
-                        .nIn(ParameterStaticValue.numHiddenNodes)
-                        .nOut(ParameterStaticValue.numOutputs)
+                        .nIn(parameterStaticValue.numHiddenNodes)
+                        .nOut(parameterStaticValue.numOutputs)
                         .activation("softmax")
                         .weightInit(WeightInit.XAVIER)
                         .build())
@@ -145,7 +145,7 @@ public class FLDLTrainer {
         MultiLayerNetwork network = new MultiLayerNetwork(conf);
         network.init();
         network.setListeners(Collections.singletonList((IterationListener) new ScoreIterationListener(10)));
-        for (int n = 0; n < ParameterStaticValue.nEpochs; n++) {
+        for (int n = 0; n < parameterStaticValue.nEpochs; n++) {
             network.fit(trainIter);
         }
 
@@ -164,22 +164,22 @@ public class FLDLTrainer {
         stringBuilder.append(modelName);
         stringBuilder.append("\n");
         stringBuilder.append("学习率:");
-        stringBuilder.append(ParameterStaticValue.learningRate);
+        stringBuilder.append(parameterStaticValue.learningRate);
         stringBuilder.append("\n");
         stringBuilder.append("迭代次数:");
-        stringBuilder.append(ParameterStaticValue.nEpochs);
+        stringBuilder.append(parameterStaticValue.nEpochs);
         stringBuilder.append("\n");
         stringBuilder.append("Batchsize:");
-        stringBuilder.append(ParameterStaticValue.batchsize);
+        stringBuilder.append(parameterStaticValue.batchsize);
         stringBuilder.append("\n");
         stringBuilder.append("隐藏层结点个数:");
-        stringBuilder.append(ParameterStaticValue.numHiddenNodes);
+        stringBuilder.append(parameterStaticValue.numHiddenNodes);
         stringBuilder.append("\n");
         stringBuilder.append("输入层结点个数:");
-        stringBuilder.append(ParameterStaticValue.numInputs);
+        stringBuilder.append(parameterStaticValue.numInputs);
         stringBuilder.append("\n");
         stringBuilder.append("输出层结点个数:");
-        stringBuilder.append(ParameterStaticValue.numOutputs);
+        stringBuilder.append(parameterStaticValue.numOutputs);
         stringBuilder.append("\n");
         FileUtils.writefiles(stringBuilder.toString(),".\\TrainDataFiles\\TrainDataSetOutput\\modelParameterFile.txt");
         System.out.println("模型参数文件输出完毕......");

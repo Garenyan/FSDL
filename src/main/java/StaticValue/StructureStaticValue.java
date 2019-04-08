@@ -1,5 +1,7 @@
 package StaticValue;
 
+import DataTrain.ParameterStaticValue;
+
 /**
  * Created by garen on 2019/2/22.
  */
@@ -26,7 +28,8 @@ public class StructureStaticValue {
     public static final String LEAFNUM = "leafNum";
     public static final String SECONDNUM = "allNodesNum";
 
-    public static final Integer DT=3;
+    //ParameterStaticValue parameterStaticValue = new ParameterStaticValue();
+    public static final Integer DT= 3;
 
 
 }
