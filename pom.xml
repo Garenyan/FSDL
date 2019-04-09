@@ -74,6 +74,11 @@
             <artifactId>dom4j</artifactId>
             <version>${dom4j-version}</version>
         </dependency>
+        <dependency>
+            <groupId>xml-apis</groupId>
+            <artifactId>xml-apis</artifactId>
+            <version>1.4.01</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/org.eclipse.tycho/org.eclipse.jdt.core -->
         <!-- https://mvnrepository.com/artifact/org.eclipse.jdt/org.eclipse.jdt.core -->
         <dependency>

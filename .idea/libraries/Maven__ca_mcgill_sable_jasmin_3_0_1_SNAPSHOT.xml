@@ -1,13 +1,13 @@
 <component name="libraryTable">
   <library name="Maven: ca.mcgill.sable:jasmin:3.0.1-SNAPSHOT">
     <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/ca/mcgill/sable/jasmin/3.0.1-SNAPSHOT/jasmin-3.0.1-20190306.115803-1.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/ca/mcgill/sable/jasmin/3.0.1-SNAPSHOT/jasmin-3.0.1-20190408.112338-1.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$MAVEN_REPOSITORY$/ca/mcgill/sable/jasmin/3.0.1-SNAPSHOT/jasmin-3.0.1-20190306.115803-1-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/ca/mcgill/sable/jasmin/3.0.1-SNAPSHOT/jasmin-3.0.1-20190408.112338-1-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$MAVEN_REPOSITORY$/ca/mcgill/sable/jasmin/3.0.1-SNAPSHOT/jasmin-3.0.1-20190306.115803-1-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/ca/mcgill/sable/jasmin/3.0.1-SNAPSHOT/jasmin-3.0.1-20190408.112338-1-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

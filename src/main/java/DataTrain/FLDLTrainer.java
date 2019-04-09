@@ -2,6 +2,7 @@ package DataTrain;
 
 import Bean.Helper.NeuralNetHelper;
 import MyTools.FileUtils;
+import StaticValue.TrainDataFileStaticValue;
 import org.canova.api.records.reader.RecordReader;
 import org.canova.api.records.reader.impl.CSVRecordReader;
 import org.canova.api.split.FileSplit;
@@ -181,7 +182,7 @@ public class FLDLTrainer {
         stringBuilder.append("输出层结点个数:");
         stringBuilder.append(parameterStaticValue.numOutputs);
         stringBuilder.append("\n");
-        FileUtils.writefiles(stringBuilder.toString(),".\\TrainDataFiles\\TrainDataSetOutput\\modelParameterFile.txt");
+        FileUtils.writefiles(stringBuilder.toString(), TrainDataFileStaticValue.MODELPARAFILE);
         System.out.println("模型参数文件输出完毕......");
     }
 

@@ -3,6 +3,7 @@ package StaticValue;
 public class TrainDataFileStaticValue {
     public static final String TRAINDATANAMEFILE = ".\\TrainDataFiles\\TrainDataNameOutput.txt";
     public static final String TRAINDATAFILE = ".\\DataFiles\\";
+    public static final String MODELPARAFILE=".\\TrainDataFiles\\TrainDataSetOutput\\modelParameterFile.txt";
 
 
     public static final String SPILTSTR = ",";

@@ -13,6 +13,16 @@ public class ResultHelper {
     private String test_file_path;
     private FeatureHelper nonFeature;
 
+    public String getModelName() {
+        return modelName;
+    }
+
+    public void setModelName(String modelName) {
+        this.modelName = modelName;
+    }
+
+    private String modelName;
+
     public void setNonFeature(FeatureHelper nonFeature) {
         this.nonFeature = nonFeature;
     }

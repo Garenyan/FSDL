@@ -25,10 +25,10 @@ public class FLDLDataTester {
     public static void main(String[] args) throws IOException {
         String test_dirpath = "H:\\PostPaperMaterial\\IJaDataset_BCEvalVersion\\bcb_reduced\\2\\default";
         String benchmark_xml_path = "H:\\workarea\\LSFrame\\benchmarkXMLFiles\\0.3folder2TestBenchmark_Clone.xml";
-        String model_FileName ="11model104";
+        String model_FileName ="model105";
         String model_File = "H:\\workarea\\LSFrame\\TrainDataFiles\\TrainDataSetOutput\\"+model_FileName+".mdl"; //训练模型可不断调节
          FLDLDataTester fldlDataTester = new FLDLDataTester();
-         fldlDataTester.run(test_dirpath,benchmark_xml_path,model_File,FeatureHelper.FUNCTION);
+         fldlDataTester.run(test_dirpath,benchmark_xml_path,model_File,FeatureHelper.NULLFEATURE);
     }
 
     public void run(String test_path,String benchmark_xml_path,String modelFile,FeatureHelper featureHelper) throws IOException {
@@ -71,6 +71,7 @@ public class FLDLDataTester {
         ResultHelper resultHelper = new ResultHelper();
         resultHelper.setNonFeature(featureHelper);
         resultHelper.setTestMethodPairSimVectors(trueMethodResults);
+        resultHelper.setModelName(model_FileName);
         resultHelper.setBenchmarkFileXMLpath(benchmark_xml_path);
         System.out.println("----------正在处理结果，即将输出精确度、召回率和F-measure值指标---------------");
         MyThread.waitForTime(2000);
