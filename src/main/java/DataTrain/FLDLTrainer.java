@@ -24,55 +24,13 @@ import org.deeplearning4j.datasets.iterator.DataSetIterator;
 import org.nd4j.linalg.lossfunctions.LossFunctions;
 import polyglot.ast.Do;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.sql.Time;
 import java.util.Collections;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 public class FLDLTrainer {
-    //public static String config_file = ".\\ConfigFiles\\parameters.properties";
-//    public static String training_file;
-//
-//    public static String output_dir;
-//
-//    public static int seed;
-//    public static double learningRate;
-//    public static int batchSize;
-//    public static int nEpochs;
-//
-//    public static int numInputs;
-//    public static int numOutputs;
-//    public static int numHiddenNodes;
-
-//    public static void Load_Config(){
-//        try {
-//            Properties prop = new Properties();
-//            InputStream is = new FileInputStream(config_file);
-//
-//            prop.load(is);
-//
-//            output_dir = prop.getProperty("output_dir");
-//
-//            training_file = prop.getProperty("training_file");
-//
-//            seed = Integer.valueOf(prop.getProperty("training_seed"));
-//            learningRate = Double.valueOf(prop.getProperty("training_learningRate"));
-//            batchSize = Integer.valueOf(prop.getProperty("training_batchSize"));
-//            nEpochs = Integer.valueOf(prop.getProperty("training_iteration"));
-//
-//            numInputs = Integer.valueOf(prop.getProperty("training_input_num"));
-//            numOutputs = Integer.valueOf(prop.getProperty("training_output_num"));
-//            numHiddenNodes = Integer.valueOf(prop.getProperty("training_hidden_num"));
-//        }
-//        catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
     public static void main(String... args) throws java.io.IOException, InterruptedException {
         ParameterStaticValue parameterStaticValue = new ParameterStaticValue();
        // Load_Config();
@@ -155,6 +113,10 @@ public class FLDLTrainer {
 
         File model_File = new File(output_dir + modelName);
         ModelSerializer.writeModel(network, model_File, true);
+        //输出网络配置信息（但是 如果仅仅是这么写的话 需要每次在文件夹中新建一个zip，并且要改名）
+        //ModelSerializer.writeModel(network,new File(".\\TrainDataFiles\\TrainDataSetOutput\\model.zip"),true);
+        //或者获得相关的配置信息，以自定义方式输出
+        getConfigureInfoToJson(network,".\\TrainDataFiles\\TrainDataSetOutput\\modelParameterFile.json");
         long end = System.nanoTime();
         System.out.println("Time Cost:"+TimeUnit.MILLISECONDS.toMillis(end-start)+"ms");
 
@@ -275,6 +237,12 @@ public class FLDLTrainer {
         long end = System.nanoTime();
         System.out.println("Time Cost:"+TimeUnit.MILLISECONDS.toMillis(end-start)+"ms");
 
+    }
+
+
+    private static void getConfigureInfoToJson(MultiLayerNetwork model,String path){
+        String json = model.getLayerWiseConfigurations().toJson();
+       FileUtils.writefiles(json,path);
     }
 
 }

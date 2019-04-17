@@ -158,7 +158,7 @@ public class ResultFactory {
                 sum = sum + sims[i];
             }
         }
-        if (sum >= 0.9998 * count) {
+        if (sum >= CloneTypeStaticValue.TYPE1 * count) {
             return true;
         } else {
             return false;
@@ -175,7 +175,7 @@ public class ResultFactory {
                 sum = sum + sims[i];
             }
         }
-        if (sum < 0.9998 * num && sum >= 0.98 * num) {
+        if (sum < CloneTypeStaticValue.TYPE1 * num && sum >= CloneTypeStaticValue.TYPE2 * num) {
             return true;
         } else {
             return false;
@@ -191,7 +191,7 @@ public class ResultFactory {
                 sum = sum + sims[i];
             }
         }
-        if (sum < 0.98 * num && sum >= 0.7 * num) {
+        if (sum < CloneTypeStaticValue.TYPE2 * num && sum >= CloneTypeStaticValue.ST3 * num) {
             return true;
         } else {
             return false;
@@ -208,19 +208,19 @@ public class ResultFactory {
             }
         }
         if (featureHelper == FeatureHelper.FUNCTION) {
-            if (sum < 0.7 * num && sum >= 0.68 * num && funSim >= 0.98) {
+            if (sum < CloneTypeStaticValue.ST3 * num && sum >= CloneTypeStaticValue.MT3 * num && funSim >= 0.98) {
                 return true;
             } else {
                 return false;
             }
         } else if (featureHelper == FeatureHelper.NULLFEATURE) {
-            if (sum < 0.7 * num && sum >= 0.68 * num && sims[11] >= 0.98) {
+            if (sum < CloneTypeStaticValue.ST3 * num && sum >= CloneTypeStaticValue.MT3 * num && sims[11] >= 0.98) {
                 return true;
             } else {
                 return false;
             }
         } else {
-            if (sum < 0.7 * num && sum >= 0.68 * num && sims[10] >= 0.98) {
+            if (sum < CloneTypeStaticValue.ST3 * num && sum >= CloneTypeStaticValue.MT3 * num && sims[10] >= 0.98) {
                 return true;
             } else {
                 return false;
@@ -279,7 +279,7 @@ public class ResultFactory {
                 sum = sum + doubles[i];
             }
         }
-        if (sum >= 0.7 * num) {
+        if (sum >= CloneTypeStaticValue.CLONETHRE * num) {
             return true;
         } else {
             //允许部分少量MT-3
@@ -672,5 +672,35 @@ public class ResultFactory {
 //            for (int j=0;j<)
 //        }
 
+    }
+
+    public Map<String,Integer> getCloneTypeMap(List<Double[]> simlist,FeatureHelper featureHelper){
+        Map<String, Integer> map = new HashMap<String, Integer>();
+        int t1 =0;
+        int t2=0;
+        int st3=0;
+        int mt3=0;
+        int t4=0;
+        for (int i=0;i<simlist.size();i++){
+            Double[] sims = simlist.get(i);
+            Double funSim = sims[11];
+            if (checkType_1(sims)) {
+                t1++;
+            } else if (checkType_2(sims)) {
+                t2++;
+            } else if (checkTypeST3(sims)) {
+                st3++;
+            } else if (checkTypeMT3(sims, featureHelper, funSim)) {
+                mt3++;
+            } else {
+                t4++;
+            }
+        }
+        map.put(CloneTypeStaticValue.TYPE1_KEY,t1);
+        map.put(CloneTypeStaticValue.TTPE2_KEY,t2);
+        map.put(CloneTypeStaticValue.TYPEST3_KEY,st3);
+        map.put(CloneTypeStaticValue.TYPEMT3_KEY,mt3);
+        map.put(CloneTypeStaticValue.TYPE4_KEY,t4);
+        return map;
     }
 }
