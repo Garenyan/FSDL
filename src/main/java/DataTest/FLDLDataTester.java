@@ -34,7 +34,7 @@ public class FLDLDataTester {
     public void run(String test_path,String benchmark_xml_path,String modelFile,FeatureHelper featureHelper) throws IOException {
         File file = new File(modelFile);
         String model_FileName = file.getName();
-        System.out.println("----------欢迎使用FSDL框架检测代码克隆------");
+        System.out.println("----------欢迎使用DCCDL框架检测代码克隆------");
         MyThread.waitForTime(2000);
         //FeatureHelper featureHelper = FeatureHelper.NULLFEATURE;
         System.out.println("-----------正在解析测试数据集，请稍后......---------------");
@@ -75,9 +75,9 @@ public class FLDLDataTester {
         resultHelper.setBenchmarkFileXMLpath(benchmark_xml_path);
         System.out.println("----------正在处理结果，即将输出精确度、召回率和F-measure值指标---------------");
         MyThread.waitForTime(2000);
-        System.out.println("---基于FSDL框架检测出的代码克隆对数量为："+trueNum);
+        System.out.println("---基于DCCDL框架检测出的代码克隆对数量为："+trueNum);
         ResultFactory.getResult(resultHelper);
-        System.out.println("----------结果输出完毕，欢迎继续使用FSDL框架检测代码克隆！--------------");
+        System.out.println("----------结果输出完毕，欢迎继续使用DCCDL框架检测代码克隆！--------------");
     }
 
 
