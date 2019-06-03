@@ -23,12 +23,14 @@ import java.util.List;
  */
 public class FLDLDataTester {
     public static void main(String[] args) throws IOException {
-        String test_dirpath = "H:\\PostPaperMaterial\\IJaDataset_BCEvalVersion\\bcb_reduced\\2\\default";
+        String test_dirpath = "H:\\PostPaperMaterial\\IJaDataset_BCEvalVersion\\bcb_reduced\\2\\default";//测试文件夹路径，如果不同目录，不同测试路径，需修改！
+        //基准文件路基，基准文件产生步骤：基准代码（人工标记或者数据库标记）--FLDLFeatureRun提取特征并计算相似度值
+        //--MethodPairSimVectorHelper类（位于Features包下）产生方法对XML文件(Main方法可能要自己写一下)
         String benchmark_xml_path = "H:\\workarea\\LSFrame\\benchmarkXMLFiles\\0.3folder2TestBenchmark_Clone.xml";
-        String model_FileName ="model104";
-        String model_File = "H:\\workarea\\LSFrame\\TrainDataFiles\\TrainDataSetOutput\\"+model_FileName+".mdl"; //训练模型可不断调节
+        String model_FileName ="model104";//已训练好的神经网络模型文件
+        String model_File = "H:\\workarea\\LSFrame\\TrainDataFiles\\TrainDataSetOutput\\"+model_FileName+".mdl"; //训练模型可不断调节，路径注意修改
          FLDLDataTester fldlDataTester = new FLDLDataTester();
-         fldlDataTester.run(test_dirpath,benchmark_xml_path,model_File,FeatureHelper.NULLFEATURE);
+         fldlDataTester.run(test_dirpath,benchmark_xml_path,model_File,FeatureHelper.NULLFEATURE);//运行测试，输出结果，FeatureHelper.NullFEATURE这个表示完整的特征测试，如果要做缺少特征的对比实验，注意修改
     }
 
     public void run(String test_path,String benchmark_xml_path,String modelFile,FeatureHelper featureHelper) throws IOException {
@@ -41,6 +43,7 @@ public class FLDLDataTester {
         MyThread.waitForTime(2000);
         List<String> paths = FileUtils.getJavaFileLists(test_path);
         List<String> newPaths = new ArrayList<String>();
+        /**选择其中的200个文件进行测试，只有基准对应，且你的JVM内存能够支撑，那可以去掉以下代码，并进行完整测试。**/
         for (int i = 0; i < 200; i++) {
             newPaths.add(paths.get(i));
         }

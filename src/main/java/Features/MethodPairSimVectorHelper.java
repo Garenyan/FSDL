@@ -46,6 +46,10 @@ public class MethodPairSimVectorHelper {
         return methodPairSimVector;
     }
 
+    /**
+     * 产生方法对XML文件
+     * @param methodPairSimVectors
+     */
     public static void convertToXMLFile(List<MethodPairSimVector> methodPairSimVectors){
         String XMLPath = MyXMLStaticValue.XMLPATH + TimeUtils.getTimeAndDateStringFormat(new Date(),"yyy-MM-dd HH-mm-ss")+".xml";
         Document document = DocumentHelper.createDocument();

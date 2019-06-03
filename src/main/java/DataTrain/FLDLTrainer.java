@@ -43,24 +43,24 @@ public class FLDLTrainer {
 //        int numOutputs = 2; //输出层个数 固定 二分类 克隆与非克隆
 //        int numHiddenNodes= 16;
         RecordReader rr = new CSVRecordReader();
-        rr.initialize(new FileSplit(new File(parameterStaticValue.training_file)));
+        rr.initialize(new FileSplit(new File(parameterStaticValue.training_file)));//加载训练文件
         DataSetIterator trainIter = new RecordReaderDataSetIterator(rr, parameterStaticValue.batchsize, 0, 2);
         long start = System.nanoTime();
         int seed = parameterStaticValue.seed;
 
         String output_dir = "TrainDataFiles\\TrainDataSetOutput\\";
         System.out.println("开始模型训练.......");
-        MultiLayerConfiguration conf = new NeuralNetConfiguration.Builder()
+        MultiLayerConfiguration conf = new NeuralNetConfiguration.Builder() //这里已经是输入层
                 /**随机种子：因为模型的权重和偏置初始化是随机的
                  * 我们需要随机种子使得每次初始化权重和偏置是一样的
                  * **/
                 .seed(seed)
                 .iterations(1)
-                .optimizationAlgo(OptimizationAlgorithm.STOCHASTIC_GRADIENT_DESCENT)
+                .optimizationAlgo(OptimizationAlgorithm.STOCHASTIC_GRADIENT_DESCENT)//这些是神经网络模型中的随机梯度下降法
                 .updater(Updater.NESTEROVS).momentum(0.9)
-                .l2(1e-4)
+                .l2(1e-4)//正则化
                 .list()
-                //隐藏层
+                //隐藏层参数设定（第一层隐藏层）
                 .layer(0,new DenseLayer.Builder().nIn(parameterStaticValue.numInputs).nOut(parameterStaticValue.numHiddenNodes) // Number of input datapoints.
                         .activation("relu") // Activation function.
                         .weightInit(WeightInit.XAVIER) // Weight initialization.
@@ -115,7 +115,7 @@ public class FLDLTrainer {
         ModelSerializer.writeModel(network, model_File, true);
         //输出网络配置信息（但是 如果仅仅是这么写的话 需要每次在文件夹中新建一个zip，并且要改名）
         //ModelSerializer.writeModel(network,new File(".\\TrainDataFiles\\TrainDataSetOutput\\model.zip"),true);
-        //或者获得相关的配置信息，以自定义方式输出
+        //或者获得相关的配置信息，以自定义方式输出，这个是可用法，注意路径的修改等等。
         getConfigureInfoToJson(network,".\\TrainDataFiles\\TrainDataSetOutput\\modelParameterFile.json");
         long end = System.nanoTime();
         System.out.println("Time Cost:"+TimeUnit.MILLISECONDS.toMillis(end-start)+"ms");
@@ -149,7 +149,14 @@ public class FLDLTrainer {
     }
 
 
-
+    /**
+     *
+     * 这个方法我其实把上面的封装了一下，但其实没有用到
+     * @param neuralNetHelper
+     * @param train_file
+     * @throws IOException
+     * @throws InterruptedException
+     */
     public static void train(NeuralNetHelper neuralNetHelper,String train_file) throws IOException, InterruptedException {
         int batchSize = neuralNetHelper.getBatchSize();
         int numInputs = neuralNetHelper.getNumInputs();
